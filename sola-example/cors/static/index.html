@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function get(url) {
+            const ajax = new XMLHttpRequest()
+            ajax.open('DELETE', url)
+            ajax.send()
+            ajax.onreadystatechange = () => {
+                if (ajax.readyState == 4 && ajax.status == 200) {
+                    console.log(url, ajax.responseText)
+                }
+            }
+        }
+        get('//localhost:2000/api.json')
+        get('//localhost:3000/api.json')
+        get('//localhost:4000/api.json')
+        get('//localhost:5000/api.json')
+    </script>
+</body>
+
+</html>
