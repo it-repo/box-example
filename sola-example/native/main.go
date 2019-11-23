@@ -30,9 +30,7 @@ func main() {
 	r := router.New()
 
 	r.Bind("/public", native.Static("public", "/public"))
-	r.BindFunc("/native", native.FromFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.StripPrefix("/native", http.FileServer(http.Dir("public"))).ServeHTTP(w, r)
-	}))
+	r.BindFunc("/native", native.From(http.StripPrefix("/native", http.FileServer(http.Dir("public")))))
 	r.BindFunc("/statik", native.From(http.StripPrefix("/statik", http.FileServer(statikFS))))
 	r.BindFunc("/afero", native.From(http.StripPrefix("/afero", fileserver)))
 
