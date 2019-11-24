@@ -11,6 +11,7 @@ require (
 	github.com/rakyll/statik v0.1.6
 	github.com/spf13/afero v1.2.2
 	github.com/spf13/viper v1.5.0
+	github.com/yuin/gopher-lua v0.0.0-20190514113301-1cd887cd7036
 )
 
 replace github.com/ddosakura/sola/v2 => ../../lib/sola

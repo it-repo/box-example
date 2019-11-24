@@ -1,25 +1,34 @@
 package main
 
 import (
+	"os"
+
 	"github.com/ddosakura/sola/v2"
-	"github.com/ddosakura/sola/v2/middleware/native"
 	"github.com/ddosakura/sola/v2/middleware/proxy"
-	"github.com/ddosakura/sola/v2/middleware/router"
+	"github.com/spf13/afero"
 )
 
 func main() {
 	app := sola.New()
+	app.Dev()
 
 	// 设置 favicon
 	app.Use(proxy.Favicon("http://fanyi.bdstatic.com/static/translation/img/favicon/favicon-32x32_ca689c3.png"))
 
-	// 和路由中间件一起使用
-	r := router.New()
-	r.Prefix = "/s"
-	r.Bind("", native.Static("static", "/s"))
-	app.Use(r.Routes())
-	// 直接使用
-	app.Use(native.Static(".", ""))
+	app.Use(proxy.New(`function handle()
+	if (URL == "/hw")
+	then
+		return 200, "Hello World!"
+	elseif (URL == "/hw2")
+	then
+		return 301, "/hw"
+	end
+end`))
+
+	wd, _ := os.Getwd()
+	bp := afero.NewBasePathFs(afero.NewOsFs(), wd)
+	script, _ := afero.ReadFile(bp, "main.lua")
+	app.Use(proxy.New(string(script)))
 
 	sola.Listen("127.0.0.1:3000", app)
 
