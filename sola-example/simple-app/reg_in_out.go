@@ -46,10 +46,10 @@ func login(next sola.Handler) sola.Handler {
 		}
 
 		fmt.Println(u.ID)
-		c[auth.CtxClaims] = map[string]interface{}{
+		c.Set(auth.CtxClaims, map[string]interface{}{
 			"id":   u.ID,
 			"user": u.Username,
-		}
+		})
 		return next(c)
 	}
 }

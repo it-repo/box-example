@@ -22,8 +22,7 @@ func main() {
 		id := router.Param(c, "id") // 路径参数
 
 		// 获取用户名
-		claims := c[auth.CtxClaims].(map[string]interface{})
-		user := claims["user"].(string)
+		user := auth.Claims(c, "user").(string)
 
 		// 输出
 		return c.JSON(http.StatusOK, map[string]interface{}{
@@ -54,10 +53,10 @@ func main() {
 			}
 
 			// 储存用户名等信息
-			c[auth.CtxClaims] = map[string]interface{}{
+			c.Set(auth.CtxClaims, map[string]interface{}{
 				"issuer": "sola",
 				"user":   user[0],
-			}
+			})
 			return next(c) // 登录成功
 		}
 	}, func(c sola.Context) error {
