@@ -5,6 +5,7 @@ example for sola & box
 ## List
 
 + [x] sola-example: [sola](https://github.com/ddosakura/sola) 框架的 Example
+    + [x] [API Doc](sola-example/api-doc)
     + [x] [Base Auth](sola-example/base-auth/main.go)
     + [x] [Config & devMode](sola-example/config)
     + [x] [CORS 跨域](sola-example/cors)

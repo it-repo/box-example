@@ -35,8 +35,8 @@ func main() {
 	acRoutes, requestAC := box.AC(app.DefaultORM(), solaAuthKey)
 	app.Use(acRoutes)
 
-	menuRouter := box.Menu(app.DefaultORM())
-	app.Use(auth.New(_auth, nil, menuRouter.Routes()))
+	routeRouter := box.Route(app.DefaultORM())
+	app.Use(auth.New(_auth, nil, routeRouter.Routes()))
 
 	r := router.New()
 	acr1 := box.ACR(ac.TypeRole, ac.LogicalOR, "r2", "r3")
