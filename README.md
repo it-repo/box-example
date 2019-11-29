@@ -11,6 +11,7 @@ example for sola & box
     + [x] [CORS 跨域](sola-example/cors)
     + [x] [自定义 http code 处理函数](sola-example/custom-http-code-handler/main.go)
     + [x] [favicon、static、backup](sola-example/favicon-static-backup/main.go)
+    + [x] [GraphQL 中间件](sola-example/graphql/main.go)
     + [x] [Hello World](sola-example/hello-world/main.go)
     + [x] [日志处理](sola-example/logger/main.go)
     + [x] [中间件执行顺序](sola-example/middleware/main.go)
