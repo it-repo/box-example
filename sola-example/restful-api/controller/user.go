@@ -22,7 +22,11 @@ func UserC() *router.Router {
 			return &User{}
 		},
 		DefaultPageSize: 10,
-		GetFunc: func(id int) interface{} {
+		GetFunc: func(ID string) interface{} {
+			id, err := strconv.Atoi(ID)
+			if err != nil {
+				return nil
+			}
 			return &User{id, "No." + strconv.Itoa(id)}
 		},
 		ListFunc: func(page int, size int) interface{} {
