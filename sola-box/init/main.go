@@ -46,11 +46,15 @@ func initDB(db *gorm.DB) {
 				Avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
 				Desc:   "I am a super administrator",
 			},
-		},
+		}, // 1
 		Perms: []ac.BoxPerm{
 			ac.BoxPerm{
 				Name: "box:admin",
 				Desc: "admin page",
+			},
+			ac.BoxPerm{
+				Name: "box:system",
+				Desc: "system manage",
 			},
 		},
 	}) // 1
@@ -65,7 +69,7 @@ func initDB(db *gorm.DB) {
 				Pass:   "123456",
 				Avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
 			},
-		},
+		}, // 2
 		Perms: []ac.BoxPerm{
 			ac.BoxPerm{
 				Name: "box:editor",
@@ -84,15 +88,24 @@ func initDB(db *gorm.DB) {
 		},
 	}) // 3
 
-	db.Model(&ac.BoxRole{Model: gorm.Model{ID: 1}}).
-		Association("Perms").
-		Append(ac.BoxPerm{Model: gorm.Model{ID: 2}})
-	db.Model(&ac.BoxRole{Model: gorm.Model{ID: 1}}).
-		Association("Perms").
-		Append(ac.BoxPerm{Model: gorm.Model{ID: 3}})
-	db.Model(&ac.BoxRole{Model: gorm.Model{ID: 2}}).
-		Association("Perms").
-		Append(ac.BoxPerm{Model: gorm.Model{ID: 3}})
+	//db.Model(&ac.BoxRole{Model: gorm.Model{ID: 1}}).
+	//	Association("Perms").
+	//	Append(ac.BoxPerm{Model: gorm.Model{ID: 2}})
+	//db.Model(&ac.BoxRole{Model: gorm.Model{ID: 1}}).
+	//	Association("Perms").
+	//	Append(ac.BoxPerm{Model: gorm.Model{ID: 3}})
+	//db.Model(&ac.BoxRole{Model: gorm.Model{ID: 2}}).
+	//	Association("Perms").
+	//	Append(ac.BoxPerm{Model: gorm.Model{ID: 3}})
+	db.Model(&ac.BoxUser{Model: gorm.Model{ID: 1}}).
+		Association("Roles").
+		Append(&ac.BoxRole{Model: gorm.Model{ID: 2}})
+	db.Model(&ac.BoxUser{Model: gorm.Model{ID: 1}}).
+		Association("Roles").
+		Append(&ac.BoxRole{Model: gorm.Model{ID: 3}})
+	db.Model(&ac.BoxUser{Model: gorm.Model{ID: 2}}).
+		Association("Roles").
+		Append(&ac.BoxRole{Model: gorm.Model{ID: 3}})
 
 	db.Create(&route.BoxRoute{
 		FatherID: 0,
@@ -112,7 +125,7 @@ func initDB(db *gorm.DB) {
 		Name:     "admin-page",
 		Desc:     "admin page",
 		Sort:     0,
-		Path:     "/box/admin",
+		Path:     "admin",
 		Perm:     "box:admin",
 
 		Component: "views/box/admin",
@@ -124,7 +137,7 @@ func initDB(db *gorm.DB) {
 		Name:     "editor-page",
 		Desc:     "editor page",
 		Sort:     0,
-		Path:     "/box/editor",
+		Path:     "editor",
 		Perm:     "box:editor",
 
 		Component: "views/box/editor",
@@ -136,7 +149,7 @@ func initDB(db *gorm.DB) {
 		Name:     "visitor-page",
 		Desc:     "visitor page",
 		Sort:     0,
-		Path:     "/box/visitor",
+		Path:     "visitor",
 		Perm:     "box:visitor",
 
 		Component: "views/box/visitor",
@@ -148,13 +161,53 @@ func initDB(db *gorm.DB) {
 		Name:     "free-page",
 		Desc:     "free page",
 		Sort:     0,
-		Path:     "/box/free",
+		Path:     "free",
 		Perm:     "",
 
 		Component: "views/box/free",
 		Title:     "free page",
 		NoCache:   true,
 	}) // 5
+
+	db.Create(&route.BoxRoute{
+		FatherID: 0,
+		Name:     "system",
+		Desc:     "system page",
+		Sort:     0,
+		Path:     "/system",
+		Perm:     "box:system",
+
+		Component: "layout/Layout",
+		Redirect:  "noRedirect",
+		Title:     "系统管理",
+		Icon:      "component",
+	}) // 6
+	db.Create(&route.BoxRoute{
+		FatherID: 6,
+		Name:     "system-info",
+		Desc:     "system info",
+		Sort:     0,
+		Path:     "info",
+		Perm:     "",
+
+		Component: "views/system/info",
+		Title:     "系统信息",
+		Icon:      "component",
+		NoCache:   true,
+	}) // 7
+	db.Create(&route.BoxRoute{
+		FatherID: 6,
+		Name:     "system-log",
+		Desc:     "system log",
+		Sort:     0,
+		Path:     "log",
+		Perm:     "",
+
+		Component: "views/system/log",
+		Title:     "系统日志",
+		Icon:      "component",
+		NoCache:   true,
+	}) // 8
 
 	// 404
 	db.Create(&route.BoxRoute{
