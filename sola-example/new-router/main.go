@@ -8,8 +8,24 @@ import (
 	router "github.com/ddosakura/sola/v2/middleware/xrouter"
 )
 
+func lookMeta(next sola.Handler) sola.Handler {
+	return func(c sola.Context) error {
+		fmt.Println(c.Get(router.CtxMeta))
+		return next(c)
+	}
+}
+
 func main() {
 	app := sola.New()
+
+	{
+		r := router.New(&router.Option{
+			Pattern: "/api",
+		})
+		app.Use(r.Routes())
+	}
+
+	app.Use(lookMeta) // test shadow context & back to origin
 
 	{
 		r := router.New(&router.Option{
