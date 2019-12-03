@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const ws = new WebSocket("ws://localhost:3000/ws");
+
+        ws.onopen = function () {
+            console.log("open");
+        };
+        ws.onmessage = function (e) {
+            const reader = new FileReader()
+            reader.onload = e => console.log(JSON.parse(e.target.result))
+            reader.readAsText(e.data)
+        };
+        ws.onclose = function () {
+            console.log("close");
+        };
+    </script>
+</body>
+
+</html>

@@ -20,5 +20,7 @@ example for sola & box
     + [x] [RESTful API](sola-example/restful-api/main.go)
     + [x] [路由&认证 (router、auth)](sola-example/router-auth/main.go)
     + [x] [完整的注册、登录、鉴权例子](sola-example/simple-app)
+    + [x] [WebSocket](sola-example/websocket/main.go)
+    + [x] [新路由中间件](sola-example/xrouter/main.go)
 + [ ] sola-box: 整合 [box](https://github.com/it-repo/box) & [sola](https://github.com/ddosakura/sola) 框架
 + [ ] echo-box: 整合 [box](https://github.com/it-repo/box) & [echo](https://github.com/labstack/echo) 框架

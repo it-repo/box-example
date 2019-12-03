@@ -10,6 +10,7 @@ require (
 	github.com/jinzhu/gorm v1.9.11
 	github.com/labstack/echo/v4 v4.1.11
 	github.com/rakyll/statik v0.1.6
+	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/afero v1.2.2
 	github.com/spf13/viper v1.5.0
 	github.com/swaggo/swag v1.6.3
