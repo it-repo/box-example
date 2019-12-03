@@ -12,10 +12,14 @@ func main() {
 	app := sola.New()
 
 	{
-		r := router.New("/api/v1")
+		r := router.New(&router.Option{
+			Pattern: "/api/v1",
+		})
 		r.Bind("/hello", hello("Hello World!"))
 		{
-			sub := r.Sub("/user")
+			sub := r.Sub(&router.Option{
+				Pattern: "/user",
+			})
 			sub.Bind("/hello", hello("Hello!"))
 			sub.Use(func(next sola.Handler) sola.Handler {
 				return func(c sola.Context) error {
@@ -32,10 +36,15 @@ func main() {
 	}
 
 	{
-		r := router.New("/api/v2")
+		r := router.New(&router.Option{
+			Pattern: "/api/v2",
+		})
 		r.Bind("/hello", hello("Hello World!"))
 		{
-			sub := r.Sub("/user")
+			sub := r.Sub(&router.Option{
+				Pattern:     "/user",
+				UseNotFound: true,
+			})
 			sub.Bind("/hello", hello("Hello!"))
 			sub.Use(func(next sola.Handler) sola.Handler {
 				return func(c sola.Context) error {
