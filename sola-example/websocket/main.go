@@ -48,10 +48,12 @@ func main() {
 
 	app := sola.New()
 	{
-		r := router.New("")
+		r := router.New(nil)
 		r.Bind("/ws", h)
 		{
-			sub := r.Sub("/send")
+			sub := r.Sub(&router.Option{
+				Pattern: "/send",
+			})
 			sub.Bind("/:msg", func(c sola.Context) error {
 				msg := router.Param(c, "msg")
 				send(ws.ALL, &Msg{Msg: msg})
@@ -61,10 +63,11 @@ func main() {
 				UUID, _ := uuid.FromString(router.Param(c, "UUID"))
 				msg := router.Param(c, "msg")
 				if UUID == ws.ALL {
-					o.SendError(UUID, ws.ErrNoUUID)
 					return c.String(http.StatusOK, "fail")
 				}
-				send(UUID, &Msg{Msg: msg})
+				if e := send(UUID, &Msg{Msg: msg}); e != nil {
+					return c.String(http.StatusOK, e.Error())
+				}
 				return c.String(http.StatusOK, "success")
 			})
 		}
