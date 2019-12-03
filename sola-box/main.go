@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/ddosakura/sola/v2"
-	"github.com/ddosakura/sola/v2/middleware/router"
+	"github.com/ddosakura/sola/v2/middleware/x/router"
 	_ "github.com/go-sql-driver/mysql"
 	box "github.com/it-repo/box/middleware/sola-box"
 	"github.com/it-repo/box/service/ac"

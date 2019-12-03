@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/ddosakura/sola/v2"
 	"github.com/ddosakura/sola/v2/middleware/auth"
-	"github.com/ddosakura/sola/v2/middleware/router"
+	"github.com/ddosakura/sola/v2/middleware/x/router"
 	box "github.com/it-repo/box/middleware/sola-box"
 	"github.com/it-repo/box/service/ac"
 	"github.com/spf13/viper"

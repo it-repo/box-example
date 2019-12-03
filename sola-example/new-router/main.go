@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/ddosakura/sola/v2"
-	router "github.com/ddosakura/sola/v2/middleware/xrouter"
+	"github.com/ddosakura/sola/v2/middleware/router"
 )
 
 func lookMeta(next sola.Handler) sola.Handler {

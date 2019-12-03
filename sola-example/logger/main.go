@@ -7,7 +7,7 @@ import (
 
 	"github.com/ddosakura/sola/v2"
 	"github.com/ddosakura/sola/v2/middleware/logger"
-	"github.com/ddosakura/sola/v2/middleware/router"
+	"github.com/ddosakura/sola/v2/middleware/x/router"
 )
 
 func main() {

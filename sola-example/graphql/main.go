@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/ddosakura/sola/v2/middleware/graphql"
-	"github.com/ddosakura/sola/v2/middleware/router"
+	"github.com/ddosakura/sola/v2/middleware/x/router"
 
 	"github.com/ddosakura/sola/v2"
 )

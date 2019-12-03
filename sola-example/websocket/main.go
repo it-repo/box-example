@@ -8,8 +8,8 @@ import (
 	uuid "github.com/satori/go.uuid"
 
 	"github.com/ddosakura/sola/v2"
+	"github.com/ddosakura/sola/v2/middleware/router"
 	"github.com/ddosakura/sola/v2/middleware/ws"
-	router "github.com/ddosakura/sola/v2/middleware/xrouter"
 )
 
 // Msg -
