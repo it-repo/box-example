@@ -18,6 +18,4 @@ var (
 	db = initDB("sqlite3", "test.db")
 
 	jwtSign, jwtAuth = auth.NewJWT([]byte("sola_key"))
-	_sign            = auth.Sign(auth.AuthJWT, []byte("sola_key"))
-	_auth            = auth.Auth(auth.AuthJWT, []byte("sola_key"))
 )

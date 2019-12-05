@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/ddosakura/sola/v2"
-	"github.com/ddosakura/sola/v2/middleware/x/router"
+	"github.com/ddosakura/sola/v2/middleware/router"
 	_ "github.com/go-sql-driver/mysql"
 	box "github.com/it-repo/box/middleware/sola-box"
 	"github.com/it-repo/box/service/ac"
@@ -28,18 +28,25 @@ func main() {
 		app.CacheORM("default", db)
 	}
 
-	boxRouter, requestAC := boxRoot(app)
-	app.Use(boxRouter.Routes())
+	r := router.New(&router.Option{
+		UseNotFound: true,
+	})
 
-	r := router.New()
-	acr1 := box.ACR(ac.TypeRole, ac.LogicalOR, "r2", "r3")
-	r.BindFunc("/hw", requestAC(acr1, func(c sola.Context) error {
-		return c.String(http.StatusOK, "Hello World! r2 | r3")
-	}))
-	acr2 := box.ACR(ac.TypeRole, ac.LogicalAND, "r2", "r3")
-	r.BindFunc("/hw2", requestAC(acr2, func(c sola.Context) error {
-		return c.String(http.StatusOK, "Hello World! r2 & r3")
-	}))
+	{
+		acRequest := boxRoot(app, r.Sub(&router.Option{
+			Pattern: "/api/box",
+		}))
+
+		acr1 := box.ACR(ac.TypeRole, ac.LogicalOR, "r2", "r3")
+		r.Bind("/hw", acRequest(acr1, func(c sola.Context) error {
+			return c.String(http.StatusOK, "Hello World! r2 | r3")
+		}))
+		acr2 := box.ACR(ac.TypeRole, ac.LogicalAND, "r2", "r3")
+		r.Bind("/hw2", acRequest(acr2, func(c sola.Context) error {
+			return c.String(http.StatusOK, "Hello World! r2 & r3")
+		}))
+	}
+
 	app.Use(r.Routes())
 
 	// 监听

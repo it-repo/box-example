@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"github.com/ddosakura/sola/v2/middleware/router"
+
 	"github.com/it-repo/box/service/ac"
 	"github.com/it-repo/box/service/route"
 
@@ -28,8 +30,9 @@ func main() {
 		app.CacheORM("default", db)
 	}
 
-	box.AC(app.DefaultORM(), solaAuthKey)
-	box.Route(app.DefaultORM())
+	r := router.New(nil)
+	box.AC(app.DefaultORM(), solaAuthKey, r)
+	box.Route(app.DefaultORM(), r)
 
 	initDB(app.DefaultORM())
 }
@@ -184,19 +187,6 @@ func initDB(db *gorm.DB) {
 	}) // 6
 	db.Create(&route.BoxRoute{
 		FatherID: 6,
-		Name:     "system-info",
-		Desc:     "system info",
-		Sort:     0,
-		Path:     "info",
-		Perm:     "",
-
-		Component: "views/system/info",
-		Title:     "系统信息",
-		Icon:      "component",
-		NoCache:   true,
-	}) // 7
-	db.Create(&route.BoxRoute{
-		FatherID: 6,
 		Name:     "system-log",
 		Desc:     "system log",
 		Sort:     0,
@@ -205,6 +195,19 @@ func initDB(db *gorm.DB) {
 
 		Component: "views/system/log",
 		Title:     "系统日志",
+		Icon:      "component",
+		NoCache:   true,
+	}) // 7
+	db.Create(&route.BoxRoute{
+		FatherID: 6,
+		Name:     "system-user",
+		Desc:     "system user",
+		Sort:     0,
+		Path:     "user",
+		Perm:     "",
+
+		Component: "views/system/user",
+		Title:     "用户管理",
 		Icon:      "component",
 		NoCache:   true,
 	}) // 8
