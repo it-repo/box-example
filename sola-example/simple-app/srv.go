@@ -6,7 +6,7 @@ import (
 
 	"github.com/ddosakura/sola/v2"
 	"github.com/ddosakura/sola/v2/middleware/auth"
-	"github.com/ddosakura/sola/v2/middleware/x/router"
+	"github.com/ddosakura/sola/v2/middleware/router"
 )
 
 func welcome(c sola.Context) error {

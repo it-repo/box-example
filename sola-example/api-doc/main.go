@@ -1,10 +1,12 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/ddosakura/sola/v2"
 	"github.com/ddosakura/sola/v2/middleware/auth"
+	"github.com/ddosakura/sola/v2/middleware/router"
 	"github.com/ddosakura/sola/v2/middleware/swagger"
-	"github.com/ddosakura/sola/v2/middleware/x/router"
 
 	_ "example/sola-example/api-doc/docs"
 	"example/sola-example/api-doc/handler"
@@ -32,30 +34,34 @@ import (
 // @x-extension-openapi {"example": "value on a json format"}
 
 func main() {
-	_sign := auth.Sign(auth.AuthJWT, []byte("sola_key"))
-	_auth := auth.Auth(auth.AuthJWT, []byte("sola_key"))
+	jwtSign, jwtAuth := auth.NewJWT([]byte("sola_key"))
 
 	app := sola.New()
-	r := router.New()
+	r := router.New(&router.Option{
+		UseNotFound: true,
+	})
+	r.Bind("GET /swagger/*", swagger.WrapHandler)
 
-	r.BindFunc("GET /swagger", swagger.WrapHandler)
-
-	sub := router.New()
-	sub.Prefix = "/api/v1"
 	{
-		sub.BindFunc("GET /hello", handler.Hello)
-		sub.BindFunc("POST /login", auth.NewFunc(_sign, tmp, handler.Hello))
-		sub.BindFunc("/logout", auth.CleanFunc(handler.Hello))
-
-		third := router.New()
-		third.Prefix = sub.Prefix
+		sub := r.Sub(&router.Option{
+			Pattern: "/api/v1",
+		})
+		sub.Bind("GET /hello", handler.Hello)
+		sub.Bind("/logout", auth.CleanFunc(handler.Hello))
 		{
-			third.BindFunc("GET /list", handler.List)
-			third.BindFunc("GET /item/:id", handler.Item)
+			third := sub.Sub(nil)
+			third.Use(auth.LoadAuthCache)
+			h := sola.MergeFunc(handler.Hello, login, jwtSign)
+			third.Bind("POST /login", h)
 		}
-		sub.Bind("", auth.New(_auth, nil, third.Routes()))
+
+		{
+			third := sub.Sub(nil)
+			third.Use(jwtAuth)
+			third.Bind("GET /list", handler.List)
+			third.Bind("GET /item/:id", handler.Item)
+		}
 	}
-	r.Bind("/api/v1", sub.Routes())
 
 	app.Use(r.Routes())
 	sola.Listen("127.0.0.1:3000", app)
@@ -64,4 +70,28 @@ func main() {
 
 func tmp(sola.Handler) sola.Handler {
 	return handler.Hello
+}
+
+func login(next sola.Handler) sola.Handler {
+	return func(c sola.Context) error {
+		// 获取 GET 参数
+		r := c.Request()
+		user := r.PostFormValue("user")
+		pass := r.PostFormValue("pass")
+
+		// 校验
+		if len(user) == 0 || pass != "123456" {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"code": -1,
+				"msg":  "FAIL",
+			})
+		}
+
+		// 储存用户名等信息
+		c.Set(auth.CtxClaims, map[string]interface{}{
+			"issuer": "sola",
+			"user":   user,
+		})
+		return next(c) // 登录成功
+	}
 }

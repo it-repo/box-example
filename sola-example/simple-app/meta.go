@@ -17,6 +17,7 @@ func initDB(dialect string, args ...interface{}) *gorm.DB {
 var (
 	db = initDB("sqlite3", "test.db")
 
-	_sign = auth.Sign(auth.AuthJWT, []byte("sola_key"))
-	_auth = auth.Auth(auth.AuthJWT, []byte("sola_key"))
+	jwtSign, jwtAuth = auth.NewJWT([]byte("sola_key"))
+	_sign            = auth.Sign(auth.AuthJWT, []byte("sola_key"))
+	_auth            = auth.Auth(auth.AuthJWT, []byte("sola_key"))
 )

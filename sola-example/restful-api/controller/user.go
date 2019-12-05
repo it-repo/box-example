@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/ddosakura/sola/v2/middleware/rest"
-	"github.com/ddosakura/sola/v2/middleware/x/router"
+	"github.com/ddosakura/sola/v2/middleware/router"
 )
 
 // User Model
@@ -15,8 +15,9 @@ type User struct {
 }
 
 // UserC Router
-func UserC() *router.Router {
+func UserC(root *router.Router) *router.Router {
 	r := rest.New(&rest.Option{
+		Root: root,
 		Path: "/user",
 		NewModel: func() interface{} {
 			return &User{}

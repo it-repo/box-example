@@ -5,9 +5,11 @@ import (
 	"net/http"
 
 	"github.com/ddosakura/sola/v2"
+	"github.com/ddosakura/sola/v2/middleware/auth"
 )
 
 // List godoc
+// @Security    ApiKeyAuth
 // @Summary     show list
 // @Description Get list
 // @Produce     json
@@ -21,10 +23,12 @@ func List(c sola.Context) error {
 			"a",
 			"b",
 			"c",
+			auth.Claims(c, "user").(string),
 		}})
 }
 
 // Item godoc
+// @Security    ApiKeyAuth
 // @Summary     Say Item
 // @Description Print Item World!
 // @Produce     json

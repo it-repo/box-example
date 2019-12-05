@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/ddosakura/sola/v2/middleware/graphql"
-	"github.com/ddosakura/sola/v2/middleware/x/router"
+	"github.com/ddosakura/sola/v2/middleware/router"
 
 	"github.com/ddosakura/sola/v2"
 )
@@ -54,13 +54,12 @@ func (*query) Projects(ctx context.Context, args struct{ Name string }) *[]*proj
 
 func main() {
 	app := sola.New()
-	r := router.New()
+	r := router.New(nil)
 
 	h := graphql.New(s, &query{})
-	r.BindFunc("/graphql", h)
+	r.Bind("/graphql", h)
 
-	sub := controller.UserC()
-	r.Bind("/user", sub.Routes())
+	controller.UserC(r)
 
 	app.Use(r.Routes())
 	sola.Listen("127.0.0.1:3000", app)
