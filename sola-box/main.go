@@ -1,15 +1,21 @@
+//go:generate statik -f -src=./public -include=*.jpg,*.png,*.gif,*.ico,*.txt,*.html,*.css,*.js,*.woff,*.ttf
 package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
+	_ "example/sola-box/statik"
+
 	"github.com/ddosakura/sola/v2"
+	"github.com/ddosakura/sola/v2/middleware/native"
 	"github.com/ddosakura/sola/v2/middleware/router"
 	_ "github.com/go-sql-driver/mysql"
 	box "github.com/it-repo/box/middleware/sola-box"
 	"github.com/it-repo/box/service/ac"
 	"github.com/jinzhu/gorm"
+	"github.com/rakyll/statik/fs"
 	"github.com/spf13/viper"
 )
 
@@ -22,15 +28,18 @@ func main() {
 	dbPass := viper.GetString("db.pass")
 	// TODO: boxSalt := viper.GetString("box.ac.salt")
 
+	statikFS, err := fs.New()
+	if err != nil {
+		panic(err)
+	}
+
 	if db, err := gorm.Open(dbDriver, fmt.Sprintf("%s:%s@%s", dbUser, dbPass, dbURL)); err != nil {
 		panic(err)
 	} else {
 		app.CacheORM("default", db)
 	}
 
-	r := router.New(&router.Option{
-		UseNotFound: true,
-	})
+	r := router.New(nil)
 
 	{
 		acRequest := boxRoot(app, r.Sub(&router.Option{
@@ -45,11 +54,16 @@ func main() {
 		r.Bind("/hw2", acRequest(acr2, func(c sola.Context) error {
 			return c.String(http.StatusOK, "Hello World! r2 & r3")
 		}))
+
+		r.Bind("GET /*", native.From(http.StripPrefix("", http.FileServer(statikFS))))
 	}
 
 	app.Use(r.Routes())
 
-	// 监听
-	sola.Listen("127.0.0.1:3000", app) // 监听 127.0.0.1:3000
-	sola.Keep()                        // 固定写法，确保所有监听未结束前程序不退出
+	host := viper.GetString("box.host")
+	port := viper.GetString("box.port")
+	host += ":" + port
+	sola.Listen(host, app)
+	log.Println("listen", host)
+	sola.Keep()
 }

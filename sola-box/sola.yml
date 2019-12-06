@@ -5,6 +5,8 @@ sola:
 box:
   ac:
     salt: box_salt
+  host: 0.0.0.0
+  port: 80
 db:
   driver: mysql
   url: /test?charset=utf8&parseTime=True&loc=Local
