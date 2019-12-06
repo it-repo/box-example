@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ddosakura/sola/v2"
+	linux "github.com/ddosakura/sola/v2/extension/sola-linux"
 	"github.com/ddosakura/sola/v2/middleware/router"
 )
 
@@ -23,6 +24,6 @@ func main() {
 	})
 
 	app.Use(r.Routes())
-	sola.Listen("127.0.0.1:3000", app)
-	sola.Keep()
+	linux.Listen("127.0.0.1:3000", app)
+	linux.Keep()
 }
