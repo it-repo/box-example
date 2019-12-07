@@ -42,8 +42,10 @@ func main() {
 	r := router.New(nil)
 
 	{
+		base := viper.GetString("box.base")
 		acRequest := boxRoot(app, r.Sub(&router.Option{
-			Pattern: "/api/box",
+			Pattern:     base + "/api/box",
+			UseNotFound: true,
 		}))
 
 		acr1 := box.ACR(ac.TypeRole, ac.LogicalOR, "r2", "r3")
