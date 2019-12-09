@@ -16,7 +16,7 @@ var (
 	ExportMiddleware = map[string]sola.Middleware{
 		"hwx2": func(next sola.Handler) sola.Handler {
 			return func(c sola.Context) error {
-				return c.String(http.StatusOK, "Hello2-666")
+				return c.String(http.StatusOK, "Hello2")
 			}
 		},
 	}

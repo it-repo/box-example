@@ -8,8 +8,11 @@ import (
 
 func main() {
 	h, err := hot.New(&hot.Option{
-		Init:  []string{"./plugin/hw", "./plugin/hw2"},
-		Watch: []string{"./plugin/hw", "./plugin/hw2"},
+		Init: []string{
+			"./plugin/hw.so",
+			"./plugin/hw2",
+		},
+		Watch: []string{"./plugin/hw2"},
 	})
 	if err != nil {
 		panic(err)
@@ -17,6 +20,7 @@ func main() {
 
 	app := sola.New()
 	app.Dev()
+	h.Used(app)
 	r := router.New(nil)
 	r.Bind("/info", func(c sola.Context) error {
 		h := h.Handler("hw")

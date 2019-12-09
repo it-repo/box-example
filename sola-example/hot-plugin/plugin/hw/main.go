@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	"github.com/ddosakura/sola/v2/extension/hot"
 
 	"github.com/ddosakura/sola/v2"
 )
@@ -10,14 +10,7 @@ import (
 var (
 	ExportHandler = map[string]sola.Handler{
 		"hw": func(c sola.Context) error {
-			return c.String(http.StatusOK, "Hello World!")
-		},
-	}
-	ExportMiddleware = map[string]sola.Middleware{
-		"hwx": func(next sola.Handler) sola.Handler {
-			return func(c sola.Context) error {
-				return c.String(http.StatusOK, "Hello")
-			}
+			return hot.Modules(c).Handler("hw2")(c)
 		},
 	}
 )
