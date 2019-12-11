@@ -20,10 +20,11 @@ example for sola & box
     + [x] [go 原生 handler 转换中间件(取代原静态文件中间件)](sola-example/native/main.go)
     + [x] [新路由中间件](sola-example/new-router/main.go)
     + [x] [反向代理中间件(取代原 backup、favicon 中间件)](sola-example/proxy/main.go)
-    + [x] [反向代理中间件(负载均衡)](sola-example/proxy-balance)
+    + [x] [反向代理中间件(负载均衡)](sola-example/proxy-balance/main.go)
     + [x] [RESTful API](sola-example/restful-api/main.go)
     + [x] [路由&认证 (router、auth)](sola-example/router-auth/main.go)
     + [x] [完整的注册、登录、鉴权例子](sola-example/simple-app)
     + [x] [WebSocket](sola-example/websocket/main.go)
+    + [x] [微信小程序登录](sola-example/wx-miniapp/main.go)
 + [ ] sola-box: 整合 [box](https://github.com/it-repo/box) & [sola](https://github.com/ddosakura/sola) 框架
 + [ ] echo-box: 整合 [box](https://github.com/it-repo/box) & [echo](https://github.com/labstack/echo) 框架

@@ -1,2 +1,4 @@
 *.db
 dist
+sola.hot
+sola-dev
