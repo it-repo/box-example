@@ -13,6 +13,7 @@ func main() {
 			"./plugin/hw2",
 		},
 		Watch: []string{"./plugin/hw2"},
+		Log:   true,
 	})
 	if err != nil {
 		panic(err)

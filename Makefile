@@ -9,8 +9,9 @@ sola: ./sola-box
 sola.init: ./sola-box/init
 	go build -o ./dist/sola.init.out ./sola-box/init
 
-example: api-doc base-auth config cors custom-http-code-handler favicon-static-backup graphql hello-world logger middleware native new-router proxy restful-api router-auth simple-app websocket
+example: api-doc base-auth config cors custom-http-code-handler favicon-static-backup graphql hello-world hot-plugin hot-update logger middleware native new-router proxy proxy-balance restful-api router-auth simple-app version-test websocket wx-miniapp
 cors: cors.2000 cors.3000 cors.4000 cors.5000
+version-test: test2.1.2
 
 api-doc: ./sola-example/api-doc
 	echo "api-doc need swag"
@@ -35,6 +36,10 @@ graphql: ./sola-example/graphql
 	go build -o ./dist/sola-example/graphql.out ./sola-example/graphql
 hello-world: ./sola-example/hello-world
 	go build -o ./dist/sola-example/hello-world.out ./sola-example/hello-world
+hot-plugin: ./sola-example/hot-plugin
+	go build -o ./dist/sola-example/hot-plugin.out ./sola-example/hot-plugin
+hot-update: ./sola-example/hot-update
+	go build -o ./dist/sola-example/hot-update.out ./sola-example/hot-update
 logger: ./sola-example/logger
 	go build -o ./dist/sola-example/logger.out ./sola-example/logger
 middleware: ./sola-example/middleware
@@ -46,14 +51,20 @@ new-router: ./sola-example/new-router
 	go build -o ./dist/sola-example/new-router.out ./sola-example/new-router
 proxy: ./sola-example/proxy
 	go build -o ./dist/sola-example/proxy.out ./sola-example/proxy
+proxy-balance: ./sola-example/proxy-balance
+	go build -o ./dist/sola-example/proxy-balance.out ./sola-example/proxy-balance
 restful-api: ./sola-example/restful-api
 	go build -o ./dist/sola-example/restful-api.out ./sola-example/restful-api
 router-auth: ./sola-example/router-auth
 	go build -o ./dist/sola-example/router-auth.out ./sola-example/router-auth
 simple-app: ./sola-example/simple-app
 	go build -o ./dist/sola-example/simple-app.out ./sola-example/simple-app
+test2.1.2: ./sola-example/test2.1.2
+	go build -o ./dist/sola-example/test2.1.2.out ./sola-example/test2.1.2
 websocket: ./sola-example/websocket
 	go build -o ./dist/sola-example/websocket.out ./sola-example/websocket
+wx-miniapp: ./sola-example/wx-miniapp
+	go build -o ./dist/sola-example/wx-miniapp.out ./sola-example/wx-miniapp
 
 # ---
 

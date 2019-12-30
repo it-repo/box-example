@@ -17,7 +17,7 @@ func boxRoot(app *sola.Sola, r *router.Router) box.ACRequest {
 		Pattern: "/user",
 	}))
 	r.Use(jwtAuth)
-	box.Route(app.DefaultORM(), r)
+	box.Route(app.DefaultORM(), r, acRequest)
 
 	acrLogList := box.ACR(ac.TypeRole, ac.LogicalOR, "admin")
 	r.Bind("/sys/log", acRequest(acrLogList, logList))

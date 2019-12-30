@@ -31,8 +31,8 @@ func main() {
 	}
 
 	r := router.New(nil)
-	box.AC(app.DefaultORM(), solaAuthKey, r)
-	box.Route(app.DefaultORM(), r)
+	_, acr := box.AC(app.DefaultORM(), solaAuthKey, r)
+	box.Route(app.DefaultORM(), r, acr)
 
 	initDB(app.DefaultORM())
 }
@@ -211,6 +211,45 @@ func initDB(db *gorm.DB) {
 		Icon:      "component",
 		NoCache:   true,
 	}) // 8
+	db.Create(&route.BoxRoute{
+		FatherID: 6,
+		Name:     "system-role",
+		Desc:     "system role",
+		Sort:     0,
+		Path:     "role",
+		Perm:     "",
+
+		Component: "views/system/role",
+		Title:     "角色管理",
+		Icon:      "component",
+		NoCache:   true,
+	}) // 9
+	db.Create(&route.BoxRoute{
+		FatherID: 6,
+		Name:     "system-perm",
+		Desc:     "system perm",
+		Sort:     0,
+		Path:     "perm",
+		Perm:     "",
+
+		Component: "views/system/perm",
+		Title:     "权限管理",
+		Icon:      "component",
+		NoCache:   true,
+	}) // 10
+	db.Create(&route.BoxRoute{
+		FatherID: 6,
+		Name:     "system-route",
+		Desc:     "system route",
+		Sort:     0,
+		Path:     "route",
+		Perm:     "",
+
+		Component: "views/system/route",
+		Title:     "路由管理",
+		Icon:      "component",
+		NoCache:   true,
+	}) // 11
 
 	// 404
 	db.Create(&route.BoxRoute{
