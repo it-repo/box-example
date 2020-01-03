@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func boxRoot(app *sola.Sola, r *router.Router) box.ACRequest {
+func boxRoot(app *sola.Sola, r *router.Router) (sola.Middleware, box.ACRequest) {
 	key := viper.GetString("sola.auth.key")
 	logger, logList := box.Logger(10, app.DefaultORM())
 	app.Use(logger)
@@ -22,5 +22,5 @@ func boxRoot(app *sola.Sola, r *router.Router) box.ACRequest {
 	acrLogList := box.ACR(ac.TypeRole, ac.LogicalOR, "admin")
 	r.Bind("/sys/log", acRequest(acrLogList, logList))
 
-	return acRequest
+	return jwtAuth, acRequest
 }

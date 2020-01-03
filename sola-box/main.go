@@ -43,10 +43,12 @@ func main() {
 
 	{
 		base := viper.GetString("box.base")
-		acRequest := boxRoot(app, r.Sub(&router.Option{
+		jwtAuth, acRequest := boxRoot(app, r.Sub(&router.Option{
 			Pattern:     base + "/api/box",
 			UseNotFound: true,
 		}))
+
+		r.Use(jwtAuth) // 加载用户登录信息
 
 		acr1 := box.ACR(ac.TypeRole, ac.LogicalOR, "r2", "r3")
 		r.Bind("/hw", acRequest(acr1, func(c sola.Context) error {
